@@ -1,0 +1,32 @@
+{
+  "configurations": [{
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "mock-server:Function",
+      "invokeTarget": {
+        "target": "template",
+        "templatePath": "${workspaceFolder}/mock-server/template.yaml",
+        "logicalId": "Function"
+      },
+      "lambda": {
+        "payload": {},
+        "environmentVariables": {}
+      }
+    },
+    {
+      "type": "aws-sam",
+      "request": "direct-invoke",
+      "name": "mock-server:main.read_root (python3.9)",
+      "invokeTarget": {
+        "target": "code",
+        "projectRoot": "${workspaceFolder}/mock-server",
+        "lambdaHandler": "main.read_root"
+      },
+      "lambda": {
+        "runtime": "python3.9",
+        "payload": {},
+        "environmentVariables": {}
+      }
+    }
+  ]
+}
