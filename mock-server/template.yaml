@@ -1,0 +1,52 @@
+# https://docs.aws.amazon.com/ko_kr/serverless-application-model/latest/developerguide/sam-resource-function.html
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: > 
+  FastAPI on Lambda
+
+Parameters:
+  Database:
+    Type: String
+  CastUrl:
+    Type: String
+  
+Globals:
+  Function:
+    Runtime: python3.9
+    Timeout: 30
+    MemorySize: 128
+    Layers:
+      - !Ref SharedLayer
+    Environment:
+      Variables:
+        DATABASE_URI: !Ref Database
+    Role: !Sub arn:aws:iam::${AWS::AccountId}:role/fastapilambdarole
+
+Resources:
+  FastapiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      OpenApiVersion: '3.0.0'
+
+  Function: # called from SAM
+    Type: AWS::Serverless::Function
+    Properties:
+      Events:
+        ApiEvent:
+          Properties:
+            RestApiId:
+              !Ref FastapiGateway
+            Path: /{proxy+}
+            Method: ANY
+          Type: Api
+      FunctionName: "FastAPILambda" # Lambda Function Name
+      CodeUri: app # Lambda Function module
+      Handler: main.handler # Lambder Handler
+  
+
+# Outputs:
+#   ApiUrl:
+#     Desccription: URL of your API
+#     Value:
+#       Fn::Sub: 'https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/'

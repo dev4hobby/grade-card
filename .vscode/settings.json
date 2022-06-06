@@ -16,5 +16,10 @@
     "javascript",
     "typescript",
   ],
-  "prettier.configPath": ".prettierrc.js"
+  "prettier.configPath": ".prettierrc.js",
+  "yaml.customTags": [
+    "FastapiGateway",
+    "!Ref",
+    "!Sub",
+  ]
 }
