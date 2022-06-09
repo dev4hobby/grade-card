@@ -16,5 +16,17 @@
     "javascript",
     "typescript",
   ],
-  "prettier.configPath": ".prettierrc.js"
+  "prettier.configPath": ".prettierrc.js",
+  "yaml.customTags": [
+    "FastapiGateway",
+    "!Ref",
+    "!Sub",
+  ],
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false,
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "ms-python.python",
+  },
+  "python.formatting.provider": "black",
 }
