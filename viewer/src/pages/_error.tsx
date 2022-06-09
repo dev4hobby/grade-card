@@ -1,9 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
-import colors from '@constants/colors'
 import styled from 'styled-components'
-import fonts from '@constants/fonts'
 
 function Error({ statusCode, err }: { statusCode: number; err: any }) {
   const router = useRouter()
@@ -20,9 +17,7 @@ function Error({ statusCode, err }: { statusCode: number; err: any }) {
 
   return (
     <PageWrapper>
-      <Image src="/assets/emoji_cry.png" alt="bad" width={80} height={80} loading="eager" />
-      <Label margin={'20px 0 0 0'}>이용 중 불편을 드려 대단히 죄송합니다.</Label>
-      <Label>{errorMessage}</Label>
+      <h1>{errorMessage}</h1>
       <ReloadButton onClick={() => handleOnRouteHome(statusCode)}>{buttonLabel}</ReloadButton>
     </PageWrapper>
   )
@@ -44,17 +39,7 @@ export const PageWrapper = styled.div`
   height: 100vh;
 `
 
-export const Label = styled(fonts.Bold[18])<{ margin?: string }>`
-  color: ${colors.GRAY_BASIC_800};
-  margin: ${(props) => props.margin && props.margin};
-`
-
 export const ReloadButton = styled.button`
-  width: 154px;
-  height: 40px;
-  margin: 20px;
   border-radius: 8px;
-  background-color: ${colors.RED_PRIMARY_1_400};
-  color: ${colors.GRAY_BASIC_0};
-  border: 1px solid ${colors.RED_PRIMARY_1_400};
+  border: 1px solid;
 `
