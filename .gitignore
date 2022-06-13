@@ -1,2 +1,4 @@
 ocr/data/*
 ocr/output/*
+*.pyc
+__pycache__
