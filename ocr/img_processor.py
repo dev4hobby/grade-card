@@ -98,15 +98,31 @@ def split_area(image_path_list, minLineLength=5000, maxLineGap=1000, margin=15, 
                 split_textarea(image_area=content_left, image_path = image_path)
                 split_textarea(image_area=content_right, image_path = image_path)
         else:
+            content_left = gray[
+                lines[0][0][3] + margin : lines[2][0][3] - margin,
+                0 + margin : lines[1][0][0] - margin,
+            ]
+            
+
+            content_right = gray[
+                lines[0][0][3] + margin : lines[2][0][3] - margin,
+                lines[1][0][0] + margin :,
+            ]
+            
+            
             if debug:
-                print("맨 뒤장")
-                # cv2.imshow('content_left', image[lines[0][0][3]:lines[2][0][3], 0:lines[1][0][0]])
-                # get_text_from_image_array(image, "kor+eng+equ")
-                last_area = split_textarea(gray, image_path = image_path)
+                print("정답지")
+                last_area = split_textarea(gray, image_path = image_path, save=False)
                 cv2.imshow("paper", last_area)
             else:
-                pass
-
+                last_left_area = split_textarea(content_left, image_path = image_path, save=False, option = {
+                    "morph_pos":(20, 20),
+                    "erode_iter":2,
+                    "last": True
+                })
+                cv2.imshow("last_area", last_left_area)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
         if debug:
             cv2.waitKey(0)
             cv2.destroyAllWindows()
@@ -132,16 +148,15 @@ def binary_labeling(src):
     cv2.destroyAllWindows()
 
 
-def get_text_from_image_array(image_array, language="kor+eng+equ"):
+def get_text_from_image_array(image_array, language="kor+equ"):
     blur = cv2.bilateralFilter(image_array, 10, 75, 75)
-    image_array = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
     pytesseract.get_languages(config="--oem 3 --psm 6")
-    print(pytesseract.image_to_string(image_array, lang=language))  # "eng+equ"
+    print(pytesseract.image_to_string(blur, lang=language))  # "eng+equ"
 
 
-def split_textarea(image_area, image_path):
-    vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (150, 150))
-    erode = cv2.erode(image_area, vertical_kernel, iterations=3)
+def split_textarea(image_area, image_path, option={"morph_pos":(150, 150), "erode_iter":3, "last":False}, save=True):
+    vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (option["morph_pos"][0], option["morph_pos"][1]))
+    erode = cv2.erode(image_area, vertical_kernel, iterations=option["erode_iter"])
 
     # contour를 찾으려면 흑백 전환을 시켜야한다. 그래서 흑백으로 변환한다.
     erode = 255 - erode
@@ -152,6 +167,8 @@ def split_textarea(image_area, image_path):
     )
 
     contours = contours[::-1]
+    if option["last"]:
+        contours = contours[1:-1]
 
     file_path = image_path.replace(JPG_DIR+"/", "")
     dir_path = "/".join(file_path.split("/")[:-1])
@@ -159,14 +176,20 @@ def split_textarea(image_area, image_path):
     for i, contour in enumerate(contours):
         global last_count
         x, y, w, h = cv2.boundingRect(contour)
-        cv2.rectangle(image_area, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-        output_dir = path.join(OUTPUT_DIR ,dir_path)
-        if not path.exists(output_dir):
-            create_directory(output_dir)
-        output_path = path.join(output_dir, f"{last_count}.jpg")
-        print("output path >> ",output_path)
-        cv2.imwrite(output_path, image_area[y:y+h, x:x+w])
-        last_count += 1
+        
+        # debug
+        # cv2.rectangle(image_area, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        if option["last"]:
+            rectarea = image_area[y : y + h, x : x + w]
+            cv2.rectangle(image_area, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            get_text_from_image_array(rectarea, "eng")
+        else:
+            output_dir = path.join(OUTPUT_DIR ,dir_path)
+            if not path.exists(output_dir):
+                create_directory(output_dir)
+            output_path = path.join(output_dir, f"{last_count}.jpg")
+            print("output path >> ",output_path)
+            cv2.imwrite(output_path, image_area[y:y+h, x:x+w])
+            last_count += 1
 
     return image_area
