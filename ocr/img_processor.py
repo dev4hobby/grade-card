@@ -150,14 +150,14 @@ def binary_labeling(src):
 
 def get_text_from_image_array(image_array, language="eng"):
     # # text more bold
-    kern = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
-    image_array = 255 - image_array
-    image_array = cv2.erode(image_array, kern, iterations=1)
-    image_array = cv2.dilate(image_array, kern, iterations=5)
-    image_array = 255 - image_array
-    # image_array = cv2.GaussianBlur(image_array, (3, 3), 0)
+    # image_array = cv2.GaussianBlur(image_array, (5, 5), 0)
+    # kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    # image_array = 255 - image_array
+    # image_array = cv2.erode(image_array, kern, iterations=1)
+    # image_array = cv2.dilate(image_array, kern, iterations=1)
+    # image_array = 255 - image_array
     pytesseract.get_languages(config="--oem 3 --psm 6")
-    print(pytesseract.image_to_string(image_array, lang=language))  # "eng+equ"
+    print(pytesseract.image_to_string(image_array, lang=language, config = '--psm 6 --oem 3 -c tessedit_char_whitelist=-.0123456789ㅡ'))  # "eng+equ"
     cv2.imshow("image_array", image_array)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
