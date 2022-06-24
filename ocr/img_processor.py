@@ -148,10 +148,22 @@ def binary_labeling(src):
     cv2.destroyAllWindows()
 
 
-def get_text_from_image_array(image_array, language="kor+equ"):
-    blur = cv2.bilateralFilter(image_array, 10, 75, 75)
+def get_text_from_image_array(image_array, language="eng"):
+    # # text more bold
+    # image_array = cv2.GaussianBlur(image_array, (5, 5), 0)
+    
+    # FIXME: 과연 의미가 있을까?
+    kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    image_array = 255 - image_array
+    # image_array = cv2.erode(image_array, kern, iterations=1)
+    image_array = cv2.dilate(image_array, kern, iterations=1)
+    image_array = 255 - image_array
     pytesseract.get_languages(config="--oem 3 --psm 6")
-    print(pytesseract.image_to_string(blur, lang=language))  # "eng+equ"
+    print(pytesseract.image_to_string(image_array, lang=language, config = '--psm 6 --oem 3 -c tessedit_char_whitelist=-.0123456789ㅡ'))  # "eng+equ"
+    cv2.imshow("image_array", image_array)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return image_array
 
 
 def split_textarea(image_area, image_path, option={"morph_pos":(150, 150), "erode_iter":3, "last":False}, save=True):
@@ -181,8 +193,8 @@ def split_textarea(image_area, image_path, option={"morph_pos":(150, 150), "erod
         # cv2.rectangle(image_area, (x, y), (x + w, y + h), (0, 255, 0), 2)
         if option["last"]:
             rectarea = image_area[y : y + h, x : x + w]
-            cv2.rectangle(image_area, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            get_text_from_image_array(rectarea, "eng")
+            # cv2.rectangle(image_area, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            get_text_from_image_array(rectarea, "kor+eng")
         else:
             output_dir = path.join(OUTPUT_DIR ,dir_path)
             if not path.exists(output_dir):

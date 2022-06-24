@@ -10,3 +10,8 @@ def pdf2jpg(pdf_files: list, jpg_dir: str):
         create_directory(os.path.join(jpg_dir, file_name))
         for i, page in enumerate(pages):
             page.save(os.path.join(jpg_dir, file_name, f"{i}.jpg"), "JPEG")
+
+if __name__ == "__main__":
+    from constants import PDF_DIR, JPG_DIR
+    from os import path
+    pdf2jpg([path.join(PDF_DIR, "2.pdf")], JPG_DIR)
