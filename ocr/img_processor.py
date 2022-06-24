@@ -151,6 +151,8 @@ def binary_labeling(src):
 def get_text_from_image_array(image_array, language="eng"):
     # # text more bold
     # image_array = cv2.GaussianBlur(image_array, (5, 5), 0)
+    
+    # FIXME: 과연 의미가 있을까?
     kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
     image_array = 255 - image_array
     # image_array = cv2.erode(image_array, kern, iterations=1)
