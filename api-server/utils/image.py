@@ -95,3 +95,6 @@ async def split_page_area_by_index(file_name, image, lines, index:int, max_index
     image_info["last"] += left_result["last"]
     image_info["last"] += right_result["last"]
     return image_info
+
+def serialize_image(ndarray):
+    return cv2.imencode(".jpg", ndarray)[1].tobytes()

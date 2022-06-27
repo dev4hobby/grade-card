@@ -2,11 +2,10 @@ from typing import Optional
 from fastapi import FastAPI, File, UploadFile
 from utils.directory import create_directory
 from utils.constants import JPG_DIR, S3_BUCKET_NAME
-from utils.image import find_edges, find_lines, get_text_from_image_array, split_page_area_by_index
+from utils.image import find_edges, find_lines, get_text_from_image_array, split_page_area_by_index, serialize_image
 from utils.converter import convert_bytes_as_pages
 from utils.aws import upload_bytes_to_s3
 
-from utils import np
 app = FastAPI()
 
 @app.post("/convert")
@@ -18,10 +17,9 @@ async def convert(
     margin: Optional[int] = 15):
     
     file_name = pdf_file.filename
-    bytes = await pdf_file.read()
-    
-    pages = convert_bytes_as_pages(bytes)
-    
+    _bytes = await pdf_file.read()
+    pages = convert_bytes_as_pages(_bytes)
+
     result = {"common": [], "last": []}
     for i, page in enumerate(pages):
         edges = find_edges(page)
@@ -52,6 +50,9 @@ async def convert(
         file_name_without_ext = file_name.split('.')[0]
         key = f"{file_name_without_ext}/{item_info[0]}_{answer}.jpg"
         print("Key  >> ", key)
-        upload_bytes_to_s3(S3_BUCKET_NAME, key, image_ndarray.tobytes())
-    
+        
+        # TODO: apply jpg compression
+        upload_bytes_to_s3(S3_BUCKET_NAME, key, serialize_image(image_ndarray))
+
+        # upload_bytes_to_s3(S3_BUCKET_NAME, key, image_ndarray.tobytes())
     return {"status": str(result["last"])}
