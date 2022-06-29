@@ -3,3 +3,4 @@ ocr/output/*
 *.pyc
 ./../__pycache__
 sqlite.db
+.env
