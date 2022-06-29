@@ -1,0 +1,73 @@
+version: "3"
+services:
+  fastapi:
+    container_name: fastapi
+    restart: unless-stopped
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      labels:
+        - fastapi
+    volumes:
+        - .:/code
+    command:
+      - /bin/sh
+      - -c
+      - |
+        gunicorn main:app --workers 2 \
+        --worker-class uvicorn.workers.UvicornWorker -b 0.0.0.0:8086
+
+    ports:
+      - 8086:8888
+
+  redis:
+    image: redis:latest
+    labels:
+      - fastapi_redis
+    ports:
+      - 6379:6379
+  
+  mysql:
+    image: mysql:5.7
+    container_name: local_mysql
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --explicit_defaults_for_timestamp
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    environment:
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=db
+    restart: unless-stopped
+    platform: linux/x86_64
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "$PORT:$PORT"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+    depends_on:
+      - fastapi
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

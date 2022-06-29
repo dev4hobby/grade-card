@@ -1,0 +1,23 @@
+# https://github.com/tiangolo/uvicorn-gunicorn-fastapi-docker
+
+FROM python:3.10-slim-bullseye
+
+# set environment variables
+ENV PYTHONWRITEBYTECODE 1
+ENV PYTHONBUFFERED 1
+
+# set working directory
+WORKDIR /code
+
+# copy dependencies
+COPY requirements.txt /code/
+
+# install dependencies
+RUN pip install -r requirements.txt
+
+RUN apt update -y
+RUN apt install libgl1-mesa-glx libglib2.0-0 -y
+
+
+# copy project
+COPY . /code/
