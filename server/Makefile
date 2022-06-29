@@ -1,5 +1,5 @@
 path := .
-TORTOISE_ORM := db.base.TORTOISE_ORM
+TORTOISE_ORM := core.config.TORTOISE_ORM
 
 define Comment
 	- Run `make help` to see all the available options.
@@ -14,7 +14,7 @@ endef
 
 
 .PHONY: lint
-lint: black isort flake mypy	## Apply all the linters.
+lint: black	## Apply all the linters.
 
 
 .PHONY: lint-check
