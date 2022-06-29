@@ -1,0 +1,7 @@
+[tool.aerich]
+tortoise_orm = "core.config.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+
+[tool.black]
+extend-exclude = "migrations,scripts"

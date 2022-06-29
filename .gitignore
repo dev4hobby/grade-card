@@ -1,4 +1,6 @@
 ocr/data/*
 ocr/output/*
 *.pyc
-__pycache__
+./../__pycache__
+sqlite.db
+.env

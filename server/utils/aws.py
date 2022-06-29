@@ -1,5 +1,5 @@
-from . import boto3
-from .constants import S3_BUCKET_NAME, CF_URL
+import boto3
+from core.config import S3_BUCKET_NAME, CF_URL
 
 s3 = boto3.resource("s3")
 

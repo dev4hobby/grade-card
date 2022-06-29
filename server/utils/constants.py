@@ -8,3 +8,5 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 
 S3_BUCKET_NAME = "grade-card"
 CF_URL = "https://grade.d3fau1t.net"
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./sqlite.db"

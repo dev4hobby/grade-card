@@ -1,11 +1,8 @@
-from . import (
-    os,
-    np,
-    cv2,
-    pytesseract,
-)
-from .constants import JPG_DIR, OUTPUT_DIR
-from .directory import create_directory
+import os
+import numpy as np
+import cv2
+import pytesseract
+from utils.directory import create_directory
 
 def get_text_from_image_array(image_array, language="eng"):
     kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))

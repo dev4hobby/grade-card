@@ -1,4 +1,6 @@
-from . import np, cv2, convert_from_bytes
+import numpy as np
+import cv2
+from pdf2image import convert_from_bytes
 
 def convert_bytes_as_pages(bytes, dpi=500):
     pages = convert_from_bytes(bytes, dpi)
