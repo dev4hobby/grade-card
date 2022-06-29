@@ -74,3 +74,6 @@ CLIENT_SECRET = os.environ['GITHUB_CLIENT_SECRET']
 S3_BUCKET_NAME = "grade-card"
 CF_URL = "https://grade.d3fau1t.net"
 
+AWS_SECRET_KEY_ID = os.environ["AWS_SECRET_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+AWS_REGION_NAME = os.environ["AWS_REGION_NAME"]
