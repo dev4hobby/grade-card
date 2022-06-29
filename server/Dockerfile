@@ -16,7 +16,7 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
 RUN apt update -y
-RUN apt install libgl1-mesa-glx libglib2.0-0 -y
+RUN apt install poppler-utils libgl1-mesa-glx libglib2.0-0 tesseract-ocr libtesseract-dev -y
 
 
 # copy project
