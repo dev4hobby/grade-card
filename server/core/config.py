@@ -20,6 +20,7 @@ APPS_MODELS = [
     "app.auth.models",
     "app.social_account.models",
     "app.user.models",
+    "app.exam.models",
     "aerich.models",
 ]
 
