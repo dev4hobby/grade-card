@@ -10,9 +10,9 @@ from utils.aws import upload_bytes_to_s3
 from django.conf import settings
 
 
-async def convert_document_to_images(pdf_file, min_line_length, max_line_gap, margin):
-    file_name = pdf_file.filename
-    _bytes = await pdf_file.read()
+def convert_document_to_images(pdf_file, min_line_length, max_line_gap, margin):
+    file_name = pdf_file.name
+    _bytes = pdf_file.read()
     pages = convert_bytes_as_pages(_bytes)
     urls = []
 
@@ -23,7 +23,7 @@ async def convert_document_to_images(pdf_file, min_line_length, max_line_gap, ma
             min_line_length = 8000
             max_line_gap = 2000
         lines = find_lines(edges, min_line_length, max_line_gap)
-        info = await split_page_area_by_index(file_name, page, lines, i, len(pages)-1)
+        info = split_page_area_by_index(file_name, page, lines, i, len(pages)-1)
         if info.get("common"):
             result["common"] += info["common"]
         if info.get("last"):
@@ -45,5 +45,5 @@ async def convert_document_to_images(pdf_file, min_line_length, max_line_gap, ma
             answer = item_info[1]
         file_name_without_ext = file_name.split('.')[0]
         key = f"{file_name_without_ext}/{item_info[0]}_{answer}.jpg"
-        urls.append(upload_bytes_to_s3(S3_BUCKET_NAME, key, serialize_image(image_ndarray)))
+        urls.append(upload_bytes_to_s3(key, serialize_image(image_ndarray)))
     return urls

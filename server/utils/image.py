@@ -31,7 +31,7 @@ def find_lines(edges, min_line_length, max_line_gap):
     del lines[1::2]
     return lines
 
-async def split_text_area(image, option={"morph_pos":(150, 150), "erode_iter":3, "last":False}):
+def split_text_area(image, option={"morph_pos":(150, 150), "erode_iter":3, "last":False}):
     vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (option["morph_pos"][0], option["morph_pos"][1]))
     erode = cv2.erode(image, vertical_kernel, iterations=option["erode_iter"])
 
@@ -61,7 +61,7 @@ async def split_text_area(image, option={"morph_pos":(150, 150), "erode_iter":3,
             result["common"].append(image[y:y+h, x:x+w])
     return result
 
-async def split_page_area_by_index(file_name, image, lines, index:int, max_index:int, margin:int=15):
+def split_page_area_by_index(file_name, image, lines, index:int, max_index:int, margin:int=15):
     text_list = []
     image_info = {"common": [], "last": []}
     option={"morph_pos":(150, 150), "erode_iter":3, "last":False}
@@ -84,8 +84,8 @@ async def split_page_area_by_index(file_name, image, lines, index:int, max_index
             "erode_iter":2,
             "last": True
         }
-    left_result = await split_text_area(image=content_left, option = option)
-    right_result = await split_text_area(image=content_right, option = option)
+    left_result = split_text_area(image=content_left, option = option)
+    right_result = split_text_area(image=content_right, option = option)
 
     image_info["common"] += left_result["common"]
     image_info["common"] += right_result["common"]

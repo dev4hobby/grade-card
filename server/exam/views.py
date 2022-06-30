@@ -24,15 +24,13 @@ class ExamViewSet(viewsets.ViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=403)
         
-        print(serializer.data)
-
-
-
-
-        
-
-        
-        return Response({'status':'ok'}, status=200)
+        urls = convert_document_to_images(
+            pdf_file=request.FILES['pdf_file'],
+            min_line_length=serializer.data['min_line_length'],
+            max_line_gap=serializer.data['max_line_gap'],
+            margin=serializer.data['margin']
+        )
+        return Response({'status':'ok', "info": urls}, status=200)
 
 
 exam_list = ExamViewSet.as_view({
