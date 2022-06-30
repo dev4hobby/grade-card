@@ -1,0 +1,13 @@
+black
+pip-tools
+Django
+djangorestframework
+gunicorn
+uvicorn
+celery
+mysqlclient
+pdf2image
+opencv-python
+pytesseract
+numpy
+boto3
