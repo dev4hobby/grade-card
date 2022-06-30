@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-e86a*6fl+y+e_6v^6w#xxqoiw9pz!ep^n)ix(z_+y7fg6sz0%f"
+SECRET_KEY = ""
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -130,9 +130,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AWS_SECRET_KEY_ID = 'AKIASS2ZUNYM57PHX2M3'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_REGION_NAME = 'ap-northeast-2'
+AWS_SECRET_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_REGION_NAME = ''
 
 AWS_S3_BUCKET_NAME = "grade-card"
 AWS_CF_URL = "https://grade.d3fau1t.net"
