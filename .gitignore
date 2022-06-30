@@ -4,3 +4,4 @@ ocr/output/*
 ./../__pycache__
 sqlite.db
 .env
+static
