@@ -12,9 +12,9 @@ services:
       - /bin/sh
       - -c
       - |
-        python manage.py runserver 0.0.0.0:8000 --settings=app.settings_local
+        python manage.py runserver 0.0.0.0:8086 --settings=app.settings_local
     ports:
-      - "8000:8000"
+      - "8086:8086"
     environment:
       - DJANGO_DB_HOST=mysql
     depends_on:
