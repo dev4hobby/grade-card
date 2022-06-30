@@ -1,16 +1,12 @@
-User = get_user_model()
+from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
 
-class UserCreateSerializer(serializer.Serializer):
-    email = serializer.EmailField(required=True)
-    username = serializer.CharField(required=True)
-    password = serializer.CharField(required=True)
 
-    print(email)
-    def create(self, validated_data):
-        user = User.objects.create(
-            email=validated_data['email'],
-            username=validated_data['username'],
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+class CustomTokenRefreshSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField()
+
+    def validate(self, attrs):
+        refresh = RefreshToken(attrs["refresh_token"])
+        data = {"access_token": str(refresh.access_token)}
+
+        return data
