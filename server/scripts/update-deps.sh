@@ -10,5 +10,4 @@ set -euxo pipefail
 rm -rf requirements*.txt
 
 # Update requirements
-pip-compile requirements.in -o requirements.txt &&\
-pip-compile requirements-dev.in -o requirements-dev.txt
+pip-compile requirements.in -o requirements.txt

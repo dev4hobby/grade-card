@@ -1,10 +1,10 @@
 import boto3
-from core.config import (
-    S3_BUCKET_NAME,
-    CF_URL,
+from app.settings import (
     AWS_SECRET_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
     AWS_REGION_NAME,
+    AWS_CF_URL,
+    AWS_S3_BUCKET_NAME,
 )
 
 s3 = boto3.resource(
@@ -14,6 +14,6 @@ s3 = boto3.resource(
     region_name=AWS_REGION_NAME,
 )
 
-def upload_bytes_to_s3(bucket_name, key, bytes):
+def upload_bytes_to_s3(key, bytes, bucket_name=AWS_S3_BUCKET_NAME):
     s3.Bucket(bucket_name).put_object(Key=key, Body=bytes, ContentType="image/jpeg")
-    return f"{CF_URL}/{key}"
+    return f"{AWS_CF_URL}/{key}"

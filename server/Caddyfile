@@ -1,6 +1,0 @@
-# https://caddyserver.com/docs/caddyfile/concepts
-
-:{$PORT} {
-	reverse_proxy /* fastapi:8086
-	encode zstd gzip
-}
