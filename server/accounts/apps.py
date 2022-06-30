@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MockAppConfig(AppConfig):
+class AccountsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mock_app'
+    name = 'accounts'

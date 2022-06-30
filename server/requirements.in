@@ -2,6 +2,11 @@ black
 pip-tools
 Django
 djangorestframework
+djangorestframework-simplejwt
+django-rest-authtoken
+django-cors-headers
+django-allauth
+dj-rest-auth
 gunicorn
 uvicorn
 celery
@@ -11,3 +16,4 @@ opencv-python
 pytesseract
 numpy
 boto3
+requests
