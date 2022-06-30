@@ -74,7 +74,7 @@ def kakao_callback(request):
 
             # 기존에 Google로 가입된 유저
             data = {"access_token": access_token, "code": code}
-            accept = requests.post(f"{BASE_URL}/accounts/kakao/login/finish", data=data)
+            accept = requests.post(f"{BASE_URL}/accounts/kakao/login/finish/", data=data)
             accept_status = accept.status_code
             print()
             return JsonResponse(
@@ -90,15 +90,16 @@ def kakao_callback(request):
             return JsonResponse(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
-        data = {"access_token": access_token, "code": code}
-        accept = requests.post(f"{BASE_URL}/accounts/kakao/login/finish", data=data)
+        data = {"access_token": access_token, "code": code, "email": email}
+        accept = requests.post(f"{BASE_URL}/accounts/kakao/login/finish/", data=data)
         accept_status = accept.status_code
         print(accept_status)
         if accept_status != 200:
             return JsonResponse({"err_msg": "failed to signup"}, status=accept_status)
         # user의 pk, email, first name, last name, Access Token, Refresh Token 받아옴
         accept_json = accept.json()
-        accept_json.pop("user", None)
+        print("accept_json >> ",accept_json)
+        # accept_json.pop("user", None)
         return JsonResponse(accept_json)
 
 
