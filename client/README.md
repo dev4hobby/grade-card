@@ -10,4 +10,5 @@ yarn dev
 
 ```bash
 echo Testing...
+echo git config modified
 ```
